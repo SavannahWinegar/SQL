@@ -27,7 +27,7 @@ VALUES
 
 #For this project, I used SQL to query the Superstore Database to get information for a series of requests.
 
-#Order the itmes by price. 
+#Order the items by price. 
 SELECT price, item_name
 FROM superstore
 ORDER BY price asc;
