@@ -63,7 +63,7 @@ SELECT COUNT(*)
 FROM "netflix_titles_info"
 WHERE type='Movie';
 
-#When was the most recent batch of tv shows and/or movies added to the database?
+#When was the most recent batch of TV shows and/or movies added to the database?
 SELECT max(date_added)
 FROM "netflix_titles_info";
 
