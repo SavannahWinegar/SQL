@@ -56,7 +56,7 @@ VALUES
     ('Company JJ', 'Manufacturing', 370.0, 3100, 1, 20, 12, 7.6),
     ('Company KK', 'Healthcare', 150.2, 3400, 0, 16, 8, 5.3);
 
-#For this project I was given freedom to create questions to answer using specific SQL functions.
+#For this project, I was given freedom to create questions to answer using specific SQL functions.
 
 #Requirement: Use CASE. Self-Created Question: What are the work/life balance conditions of the companies?
 SELECT company_name, paid_time_off_days,
