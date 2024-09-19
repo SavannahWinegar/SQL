@@ -1,0 +1,54 @@
+#In this SQL, I'm querying a database with multiple tables in it to answer a number of questions and requests revolving around the data inside.
+
+#1 What is the name and identifaction number of the customers who do not reside in the US?
+SELECT FirstName, LastName, CustomerId, Country
+FROM chinook.customers
+WHERE company<>'NULL'
+AND state<>'NULL'
+AND country<>'USA';
+
+#2 Present the list of which customers live in Brazil.
+SELECT *
+FROM chinook.customers
+WHERE company<>'NULL'
+AND state<>'NULL'
+AND country='Brazil';
+
+#3 What are the invoices of customers from Brazil?
+SELECT FirstName, LastName, InvoiceId, InvoiceDate, BillingCountry  
+FROM chinook.invoices
+INNER JOIN chinook.customers
+ON customers.CustomerId = invoices.CustomerId
+WHERE BillingCountry='Brazil';
+
+#4 Show the employees who are sales agents.
+SELECT *
+FROM chinook.employees
+WHERE Title='Sales Support Agent';
+
+#5 Find a distinct/unique way to list the billing countries from the Invoice table.
+SELECT DISTINCT BillingCountry, COUNT(BillingCountry) OVER (PARTITION BY BillingCountry)
+FROM chinook.invoices
+WHERE BillingState<>'NULL'
+AND BillingPostalCode<>'NULL';
+
+#6 Reveal the invoices associated with each Sales Agent.
+SELECT FirstName, LastName, Title, InvoiceId
+FROM chinook.employees
+INNER JOIN chinook.customers
+ON employees.EmployeeId=customers.SupportRepId
+INNER JOIN chinook.invoices
+ON invoices.CustomerId=customers.CustomerId;
+
+#7 Show the Invoice Total, Customer name, Country, and Sales Agent name for all invoices and customers.
+WITH temptable AS(
+SELECT FirstName AS CustomerFirst, LastName AS CustomerLast, SupportRepId, CustomerId, Country
+FROM customers)
+
+SELECT InvoiceId, CustomerId, CustomerFirst, CustomerLast, Country, Title, FirstName, LastName, Total AS 'InvoiceTotal', BillingCountry
+FROM temptable
+INNER JOIN employees
+ON employees.EmployeeId=temptable.SupportRepId
+INNER JOIN invoices
+ON invoices.CustomerId=temptable.CustomerId;
+
