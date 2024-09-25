@@ -52,3 +52,59 @@ ON employees.EmployeeId=temptable.SupportRepId
 INNER JOIN invoices
 ON invoices.CustomerId=temptable.CustomerId;
 
+#8 How many invoices were there in 2009?
+SELECT COUNT(InvoiceId), InvoiceDate
+FROM invoices
+WHERE InvoiceDate BETWEEN '2009-01-01 00:00:00' AND '2009-12-31 00:00:00';
+
+#9 What are the total sales for 2009?
+SELECT SUM(Total) AS 'Total Sales'
+FROM invoices
+WHERE InvoiceDate BETWEEN '2009-01-01 00:00:00' AND '2009-12-31 00:00:00';
+
+#10 Write a query that includes the purchased track name with each invoice line ID.
+SELECT InvoiceLineID, Name
+FROM invoice_items
+INNER JOIN tracks
+ON invoice_items.TrackId=tracks.TrackId;
+
+#11 Write a query that includes the purchased track name AND artist name with each invoice line ID.
+WITH temptable AS(
+SELECT Name AS Artist_Name, ArtistId
+FROM artists)
+
+SELECT InvoiceLineID, Name, Artist_Name
+FROM invoice_items
+INNER JOIN tracks
+ON invoice_items.TrackId=tracks.TrackId
+INNER JOIN albums
+ON albums.AlbumID=tracks.AlbumId
+INNER JOIN temptable
+ON albums.ArtistId=temptable.ArtistId;
+
+#12 Provide a query that shows all the Tracks, and include the Album name, Media type, and Genre.
+SELECT Name, Title, MediaTypeId, GenreId
+FROM tracks
+Inner JOIN albums
+ON albums.AlbumId=tracks.AlbumId;
+
+#13 Show the total sales made by each sales agent.
+SELECT EmployeeId, LastName, FirstName, Title, SUM(Total) AS 'Total Sales'
+FROM employees
+INNER JOIN customers
+ON employees.EmployeeId=customers.SupportRepId
+INNER JOIN invoices
+ON invoices.CustomerId=customers.CustomerId
+GROUP BY EmployeeId;
+
+#14 Which sales agent made the most dollars in sales in 2009?
+SELECT EmployeeId, LastName, FirstName, Title, SUM(Total), InvoiceDate
+FROM employees
+INNER JOIN customers
+ON employees.EmployeeId=customers.SupportRepId
+INNER JOIN invoices
+ON invoices.CustomerId=customers.CustomerId
+WHERE InvoiceDate BETWEEN '2009-01-01 00:00:00' AND '2009-12-31 00:00:00'
+GROUP BY EmployeeId
+ORDER BY SUM(Total) desc;
+
